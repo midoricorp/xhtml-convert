@@ -64,9 +64,11 @@ public class Slack {
                     }
                     default:
                         // ignore the markup
-                        JSONObject o = new JSONObject();
-                        o.put("text", item.getFirstChild().getTextContent());
-                        attachments.add(o);
+                        if (item.getFirstChild() != null) {
+                            JSONObject o = new JSONObject();
+                            o.put("text", item.getFirstChild().getTextContent());
+                            attachments.add(o);
+                        }
 
 
                 }
