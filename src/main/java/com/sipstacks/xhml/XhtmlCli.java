@@ -5,6 +5,7 @@ import org.w3c.dom.Node;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 /**
  * Created by torrey on 27/04/16.
@@ -24,7 +25,7 @@ public class XhtmlCli {
         System.err.println("***********");
         obj.parse(sb.toString());
         Slack slack = new Slack();
-        System.err.println(slack.convert(obj));
+        System.err.println(Arrays.toString(slack.convert(obj).toArray()));
 
     }
 }
