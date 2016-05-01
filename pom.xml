@@ -6,6 +6,20 @@
 
     <groupId>com.sipstacks.xhtml-convert</groupId>
     <artifactId>xhtml-convert</artifactId>
+    
+    <scm>
+        <connection>scm:git:https://github.com/tsearle/script.git</connection>
+        <developerConnection>scm:git:https://github.com/tsearle/script.git</developerConnection>
+        <url>https://github.com/tsearle/script</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>bintray</id>
+            <url>https://api.bintray.com/maven/tsearle/maven/xhtml-convert</url>
+        </repository>
+    </distributionManagement>
     <version>0.1-SNAPSHOT</version>
     <repositories>
         <repository>
