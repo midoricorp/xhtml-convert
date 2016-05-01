@@ -8,9 +8,9 @@
     <artifactId>xhtml-convert</artifactId>
     
     <scm>
-        <connection>scm:git:https://github.com/tsearle/script.git</connection>
-        <developerConnection>scm:git:https://github.com/tsearle/script.git</developerConnection>
-        <url>https://github.com/tsearle/script</url>
+        <connection>scm:git:https://github.com/tsearle/xhtml-convert.git</connection>
+        <developerConnection>scm:git:https://github.com/tsearle/xhtml-convert.git</developerConnection>
+        <url>https://github.com/tsearle/xhtml-convert</url>
         <tag>HEAD</tag>
     </scm>
 
