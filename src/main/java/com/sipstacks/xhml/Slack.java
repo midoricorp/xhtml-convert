@@ -30,6 +30,8 @@ public class Slack {
     }
     public static List<Attachment> convert(XHTMLObject obj) {
         List<Attachment> attachments = new ArrayList<Attachment>();
+        List<String> markdown_in = new ArrayList<String>();
+        markdown_in.add("text");
         for(int i = 0; i < obj.objects.getLength(); i++ ) {
             Node item = obj.objects.item(i);
             if(item.getNodeType() == Node.TEXT_NODE) {
@@ -92,25 +94,163 @@ public class Slack {
                     }
                     case "img": {
                         String img = item.getAttributes().getNamedItem("src").getTextContent();
+                        boolean isNew = false;
+                        Attachment a;
                         if (img != null) {
-                            Attachment a = new Attachment();
-                            a.setText("");
+                            if (attachments.size() > 0 && attachments.get(attachments.size() - 1).getImage_url() == null
+                                    && attachments.get(attachments.size() - 1).getText() == null) {
+                                a = attachments.get(attachments.size() - 1);
+                                if(a.getText() == null) {
+                                    a.setText("");
+                                }
+                            } else {
+                                a = new Attachment();
+                                a.setText("");
+                                isNew = true;
+                            }
                             a.setImage_url(img);
-                            attachments.add(a);
+                            if (isNew) {
+
+                                System.err.println("adding Image url " + img);
+                                attachments.add(a);
+                            }
+                        } else {
+                            System.err.println("No src attribute found!");
+                        }
+                        break;
+                    }
+                    case "a": {
+                        String href = item.getAttributes().getNamedItem("href").getTextContent();
+                        // add the markup
+                        if (item.getFirstChild() != null) {
+                            Attachment a;
+                            boolean isNew = false;
+                            if (attachments.size() > 0) {
+                                a = attachments.get(attachments.size() - 1);
+                            } else {
+                                a = new Attachment();
+                                isNew = true;
+                            }
+                            String text = a.getText();
+                            if (text == null) {
+                                text = "";
+                            } else {
+                                text += " ";
+                            }
+                            text += "<" + href;
+                            if(item.getFirstChild().getTextContent()!=null) {
+                                text += "|" + item.getFirstChild().getTextContent();
+                            }
+                            text+=">";
+                            a.setText(text);
+                            a.setMrkdwn_in(markdown_in);
+                            if (isNew) {
+                                attachments.add(a);
+                            }
+                        }
+                        break;
+                    }
+                    case "b": {
+                        // add the markup
+                        if (item.getFirstChild() != null) {
+                            Attachment a;
+                            boolean isNew = false;
+                            if (attachments.size() > 0) {
+                                a = attachments.get(attachments.size() - 1);
+                            } else {
+                                a = new Attachment();
+                                isNew = true;
+                            }
+                            String text = a.getText();
+                            if (text == null) {
+                                text = "";
+                            } else {
+                                text += " ";
+                            }
+                            a.setText(text + "*" + item.getFirstChild().getTextContent() + "*");
+                            a.setMrkdwn_in(markdown_in);
+                            if (isNew) {
+                                attachments.add(a);
+                            }
+                        }
+                        break;
+                    }
+                    case "pre": {
+                        // add the markup
+                        if (item.getFirstChild() != null) {
+                            Attachment a;
+                            boolean isNew = false;
+                            if (attachments.size() > 0) {
+                                a = attachments.get(attachments.size() - 1);
+                            } else {
+                                a = new Attachment();
+                                isNew = true;
+                            }
+                            String text = a.getText();
+                            if (text == null) {
+                                text = "";
+                            } else {
+                                text += " ";
+                            }
+                            a.setText(text + "```" + item.getFirstChild().getTextContent() + "```");
+                            a.setMrkdwn_in(markdown_in);
+                            if (isNew) {
+                                attachments.add(a);
+                            }
+                        }
+                        break;
+                    }
+                    case "i": {
+                        // add the markup
+                        if (item.getFirstChild() != null) {
+                            Attachment a;
+                            boolean isNew = false;
+                            if (attachments.size() > 0) {
+                                a = attachments.get(attachments.size() - 1);
+                            } else {
+                                a = new Attachment();
+                                isNew = true;
+                            }
+                            String text = a.getText();
+                            if (text == null) {
+                                text = "";
+                            } else {
+                                text += " ";
+                            }
+                            a.setText(text + "_" + item.getFirstChild().getTextContent() + "_");
+                            a.setMrkdwn_in(markdown_in);
+                            if (isNew) {
+                                attachments.add(a);
+                            }
                         }
                         break;
                     }
                     case "br": {
                         Attachment a = new Attachment();
                        attachments.add(a);
-
+                        break;
                     }
                     default:
                         // ignore the markup
                         if (item.getFirstChild() != null) {
-                            Attachment a = new Attachment();
-                            a.setText(item.getFirstChild().getTextContent());
-                            attachments.add(a);
+                            Attachment a;
+                            boolean isNew = false;
+                            if (attachments.size() > 0) {
+                                a = attachments.get(attachments.size() - 1);
+                            } else {
+                                a = new Attachment();
+                                isNew = true;
+                            }
+                            String text = a.getText();
+                            if (text == null) {
+                                text = "";
+                            } else {
+                                text += " ";
+                            }
+                            a.setText(text + item.getFirstChild().getTextContent());
+                            if (isNew) {
+                                attachments.add(a);
+                            }
                         }
 
 
