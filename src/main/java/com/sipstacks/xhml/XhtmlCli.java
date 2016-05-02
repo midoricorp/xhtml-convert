@@ -17,6 +17,7 @@ public class XhtmlCli {
         String line;
         while ((line = stream.readLine()) != null) {
             sb.append(line);
+            sb.append("\n");
         }
         XHTMLObject obj = new XHTMLObject();
         obj.parse(sb.toString());

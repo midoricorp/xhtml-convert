@@ -120,17 +120,59 @@ public class Slack {
                         break;
                     }
                     case "a": {
-                        String href = item.getAttributes().getNamedItem("href").getTextContent();
+                        Node hrefItem = item.getAttributes().getNamedItem("href");
+                        if(hrefItem == null) {
+                            break;
+                        }
+                        String href = hrefItem.getTextContent();
                         // add the markup
-                        if (item.getFirstChild() != null) {
-                            Attachment a;
-                            boolean isNew = false;
-                            if (attachments.size() > 0) {
-                                a = attachments.get(attachments.size() - 1);
-                            } else {
-                                a = new Attachment();
-                                isNew = true;
+                        Node aChild = item.getFirstChild();
+                        Attachment a;
+                        boolean isNew = false;
+                        if (attachments.size() > 0) {
+                            a = attachments.get(attachments.size() - 1);
+                        } else {
+                            a = new Attachment();
+                            isNew = true;
+                        }
+
+                        //skip whitespace bodies
+                        while (aChild != null) {
+                            if(aChild.getNodeType() == Node.TEXT_NODE && aChild.getTextContent().replaceAll("\\s+", "").length() == 0) {
+                                aChild = aChild.getNextSibling();
+                                continue;
                             }
+                            break;
+                        }
+                        if (aChild != null) {
+                            if(aChild.getNodeType() == Node.TEXT_NODE && aChild.getTextContent().replaceAll("\n", "").length() > 0) {
+
+                                String text = a.getText();
+                                if (text == null) {
+                                    text = "";
+                                } else {
+                                    text += " ";
+                                }
+                                text += "<" + href;
+                                String textContent = aChild.getTextContent();
+                                textContent = textContent.replaceAll("\n", "");
+                                if(textContent !=null && textContent.length() > 0) {
+                                    text += "|" + textContent;
+                                }
+                                text+=">";
+                                a.setText(text);
+                            } else if (aChild.getNodeName().equals("img")) {
+                                if (!isNew) {
+                                    a = new Attachment();
+                                    a.setText("");
+                                    isNew = true;
+                                }
+                                String img = aChild.getAttributes().getNamedItem("src").getTextContent();
+                                a.setTitle_link(href);
+                                a.setTitle(href);
+                                a.setImage_url(img);
+                            }
+                        } else {
                             String text = a.getText();
                             if (text == null) {
                                 text = "";
@@ -138,15 +180,12 @@ public class Slack {
                                 text += " ";
                             }
                             text += "<" + href;
-                            if(item.getFirstChild().getTextContent()!=null) {
-                                text += "|" + item.getFirstChild().getTextContent();
-                            }
                             text+=">";
                             a.setText(text);
-                            a.setMrkdwn_in(markdown_in);
-                            if (isNew) {
-                                attachments.add(a);
-                            }
+                        }
+                        a.setMrkdwn_in(markdown_in);
+                        if (isNew) {
+                            attachments.add(a);
                         }
                         break;
                     }
