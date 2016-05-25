@@ -45,9 +45,9 @@
         <version>1.1</version>
     </dependency>
      <dependency>
-         <groupId>com.github.flowctrl</groupId>
+         <groupId>com.github.midoricorp</groupId>
          <artifactId>slack-api</artifactId>
-         <version>v1.1.0.RELEASE</version>
+         <version>master-SNAPSHOT</version>
      </dependency>
  </dependencies>
 

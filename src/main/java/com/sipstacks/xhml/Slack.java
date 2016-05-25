@@ -3,7 +3,7 @@ package com.sipstacks.xhml;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.w3c.dom.Node;
-import flowctrl.integration.slack.type.Attachment;
+import allbegray.slack.type.Attachment;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
