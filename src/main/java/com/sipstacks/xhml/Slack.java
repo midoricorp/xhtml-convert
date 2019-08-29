@@ -85,7 +85,11 @@ public class Slack {
                         } else {
                             text += " ";
                         }
-                        a.setText(text + item.getFirstChild().getTextContent());
+                        Node aChild = item.getFirstChild();
+			if (aChild != null) {
+				text += item.getFirstChild().getTextContent();
+			}
+                        a.setText(text);
                         if (isNew) {
                             System.err.println("Adding new span attachment");
                             attachments.add(a);
