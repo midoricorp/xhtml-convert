@@ -2,6 +2,7 @@ package com.sipstacks.xhml;
 
 import org.w3c.dom.Node;
 
+import javax.xml.transform.TransformerException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,6 +28,17 @@ public class XhtmlCli {
         obj.parse(sb.toString());
         Slack slack = new Slack();
         System.err.println(Arrays.toString(slack.convert(obj).toArray()));
+
+        String emojii = null;
+        try {
+            emojii = Emojiify.convert(obj);
+            System.err.println("Emojii conversion:");
+            System.err.println(emojii);
+            System.err.println("***********");
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        }
+
 
     }
 }
