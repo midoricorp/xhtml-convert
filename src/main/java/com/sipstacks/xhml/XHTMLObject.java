@@ -40,7 +40,7 @@ public class XHTMLObject {
         objects = document.getFirstChild().getFirstChild().getChildNodes();
     }
 
-    private String getString() throws TransformerException {
+    public String getString() throws TransformerException {
         TransformerFactory tf = TransformerFactory.newInstance();
         Transformer transformer = tf.newTransformer();
         transformer.setOutputProperty(OutputKeys.INDENT, "no");
