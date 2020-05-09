@@ -31,9 +31,9 @@ public class XhtmlCli {
 
         String emojii = null;
         try {
-            emojii = Emojiify.convert(obj);
+            Emojiify.convert(obj);
             System.err.println("Emojii conversion:");
-            System.err.println(emojii);
+            System.err.println(obj.getString());
             System.err.println("***********");
         } catch (TransformerException e) {
             e.printStackTrace();
