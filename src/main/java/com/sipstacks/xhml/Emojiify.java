@@ -16,23 +16,12 @@ import java.io.StringWriter;
  */
 public class Emojiify {
 
-    public static String convert(XHTMLObject obj) throws TransformerException {
+    public static void convert(XHTMLObject obj) throws TransformerException {
 
         NodeList nodeList = obj.objects;
         convertNodeList(nodeList);
-
-        TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer transformer = tf.newTransformer();
-        transformer.setOutputProperty(OutputKeys.INDENT, "no");
-        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-
-        StringWriter writer = new StringWriter();
-        for(int i = 0; i < nodeList.getLength(); i++ ) {
-            Node item = nodeList.item(i);
-            transformer.transform(new DOMSource(item), new StreamResult(writer));
-        }
-        return writer.toString();
     }
+
 
     private static void convertNodeList(NodeList nodeList) {
         for(int i = 0; i < nodeList.getLength(); i++ ) {
