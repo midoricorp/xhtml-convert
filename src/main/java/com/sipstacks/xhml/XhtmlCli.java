@@ -39,6 +39,10 @@ public class XhtmlCli {
             e.printStackTrace();
         }
 
+        String text = obj.toText();
+        System.err.println("Text Conversion:");
+        System.err.println(text);
+        System.err.println("***********");
 
     }
 }

@@ -39,6 +39,22 @@ public class XHTMLObject {
         }
         objects = document.getFirstChild().getFirstChild().getChildNodes();
     }
+    public void toText(NodeList nodeList, StringWriter writer) {
+        for(int i = 0; i < nodeList.getLength(); i++ ) {
+            Node item = nodeList.item(i);
+            if(item.getNodeType() == Node.TEXT_NODE) {
+                writer.append(item.getTextContent());
+            } else {
+                NodeList childNodes = item.getChildNodes();
+                if(childNodes != null) toText(childNodes,writer);
+            }
+        }
+    }
+    public String toText() {
+        StringWriter writer = new StringWriter();
+        toText(objects,writer);
+        return writer.toString();
+    }
 
     public String getString() throws TransformerException {
         TransformerFactory tf = TransformerFactory.newInstance();
