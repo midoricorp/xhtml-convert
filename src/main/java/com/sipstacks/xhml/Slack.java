@@ -61,13 +61,15 @@ public class Slack {
                 a.setText(text + newText);
             } else {
                 switch(item.getNodeName()) {
-                    case "span": {
+                    case "span":
+                    case "font": {
                         Attachment a;
                         if (attachments.size() > 0) {
                             a = attachments.get(attachments.size() - 1);
                         } else {
                             a = new Attachment();
-                            System.err.println("Adding new span attachment");
+                            attachments.add(a);
+                            System.err.println("Adding new span/font attachment");
                         }
 
                         Node styleNode = item.getAttributes().getNamedItem("style");
@@ -77,8 +79,29 @@ public class Slack {
 
                             String color = getStyleAttribute(style, "color");
                             if (color != null) {
+                                if(!color.startsWith("#")) {
+                                    String hex = ColorMapper.getHex(color);
+                                    if (hex != null) {
+                                        color = hex;
+                                    }
+                                }
                                 a.setColor(color);
-                                System.err.println("Setting color on node");
+                                System.err.println("Setting color " + color + " on node");
+                            }
+                        } else {
+                            Node colorNode = item.getAttributes().getNamedItem("color");
+                            if (colorNode != null) {
+                                String color = colorNode.getTextContent();
+                                if (color != null) {
+                                    if(!color.startsWith("#")) {
+                                        String hex = ColorMapper.getHex(color);
+                                        if (hex != null) {
+                                            color = hex;
+                                        }
+                                    }
+                                    a.setColor(color);
+                                    System.err.println("Setting color " + color + " on node");
+                                }
                             }
                         }
 
